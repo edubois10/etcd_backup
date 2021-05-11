@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    purpose: etcd-backup
+  name: etcd-backup-sa
+  namespace: etcd-backup
+  labels: etcd-backup

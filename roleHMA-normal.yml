@@ -1,0 +1,15 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: etcd-backup-role-hostmount-anyuid
+  namespace: etcd-backup
+  labels: etcd-backup
+rules:
+  - apiGroups:
+      - "security.openshift.io"
+    resourceNames:
+      - hostmount-anyuid
+    resources:
+    - securitycontextconstraints
+    verbs:
+      - use

@@ -1,0 +1,17 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: etcd-backup
+  labels: etcd-backup
+  labels:
+    app: etcd-backup
+  annotations:
+    description: "ImageStream for etcd-backup"
+spec:
+  lookupPolicy:
+    local: true
+  tags:
+    - name: latest
+      from:
+        kind: ImageStreamTag
+        name: etcd-backup:latest

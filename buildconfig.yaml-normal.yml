@@ -1,0 +1,37 @@
+{{- if eq .Values.install "true" }}
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: {{ .Values.general.name }}
+  namespace: {{ .Values.general.namespace }}
+  labels: {{ include "sdx-etcd-backup.labels" . | nindent 4 }}
+spec:
+  nodeSelector:
+    node-role.kubernetes.io/master: ""
+  resources:
+    limits:
+      cpu: "300m"
+      memory: "1000Mi"
+  successfulBuildsHistoryLimit: 3
+  failedBuildsHistoryLimit: 3
+  nodeSelector: null
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+  source:
+    type: Git
+    git:
+      uri: {{ .Values.secret_gitlab.uri }} 
+    #contextDir: "container"
+    sourceSecret:
+      name: {{ .Values.secret_gitlab.name }}
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: {{ .Values.secret_gitlab.context }} 
+  output:
+    to:
+      kind: ImageStreamTag
+      name: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+  runPolicy: Serial
+{{- end }}
